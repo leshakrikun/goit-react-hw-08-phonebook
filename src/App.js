@@ -1,72 +1,53 @@
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, Suspense } from 'react';
+import { Switch } from 'react-router-dom';
 import Container from './components/Container/container';
+import PrivateRoute from './components/PrivateRoute';
+import PublicRoute from './components/PublicRoute';
 import AppBar from './components/AppBar';
 import Phonebook from './components/PhoneBook/phoneBook';
 import Contacts from './components/Contacts/contacts';
 import Filter from './components/Filter/filter';
-import { getContacts } from './redux/actions';
-/* import  operations  from '../src/redux/auth/auth-operations'; */
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-/* import TodosView from './views/TodosView';*/
-import HomeView from './views/HomeView';
 import RegisterView from './views/RegisterView';
 import LoginView from './views/LoginView';
-
-import { authOperations } from './redux/auth'; 
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
+import  {authSelectors}  from '../src/redux/auth/auth-selectors';
+import   {authOperations}  from '../src/redux/auth/auth-operations';
 import './App.css';
-
 
 export default function App() {
   const dispatch = useDispatch();
+  const isFetchingCurrentUser = useSelector(authSelectors.getIsFetchingCurrent);
 
- 
   useEffect(() => {
     dispatch(authOperations.fetchCurrentUser());
   }, [dispatch]);
-  useEffect(() => {
-    dispatch(getContacts());
-  }, [dispatch]);
-
+  
   return (
-    <>
-      <Container>
-        <AppBar />
-
-        {/* <Switch> */}
-        <Route exact path="/" component={HomeView} />
-        <Route path="/register" component={RegisterView} />
-        <Route path="/login" component={LoginView} />
-        {/* <Route path="/todos" component={TodosView} /> */}
-      {/* </Switch>  */}
-
-        <Phonebook />
-        <Filter />
-        <Contacts />
-      </Container>
-    </>
+    <Container>
+      {isFetchingCurrentUser ? (
+      <h1>Загрузка</h1>
+    ) : (
+      <>
+      <AppBar />
+      <Switch>
+          <Suspense fallback={<p>Загружаем...</p>}>
+            <PublicRoute exact path="/register" restricted>
+              <RegisterView />
+            </PublicRoute>
+            <PublicRoute exact path="/login" redirectTo="/contacts" restricted>
+              <LoginView />
+            </PublicRoute>
+            <PrivateRoute path="/contacts" redirectTo="/login">
+            <Phonebook />
+            <Filter />
+            <Contacts />
+            </PrivateRoute>
+            
+          </Suspense>
+        </Switch>       
+      </>)}
+    </Container>
   );
 }
 
 
-/* 
-  useEffect(() => {
-    dispatch(authOperations.fetchCurrentUser());
-  }, [dispatch]); */
-
- 
-
-/*       <Switch>
-        <Route exact path="/" component={HomeView} />
-        <Route path="/register" component={RegisterView} />
-        <Route path="/login" component={LoginView} />
-        <Route path="/todos" component={TodosView} />
-      </Switch> */
-  

@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteContacts } from '../../redux/actions';
 import { deleteFilteredContact } from '../../redux/reducer';
 import { contacts } from '../../redux/contacts-selectors';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
 
 import s from './contacts.module.css';
 let search = '';
@@ -27,25 +29,25 @@ const Contacts = () => {
   return (
     <>
       {state.loader && <h2>Идет загрузка</h2>}
-      {state.error && <h2>Ошибка загрузки</h2>}
-
       {search.length > 0 && (
         <div className={s.contactListformat}>
-          <ul className={s.contactList}>
+          <ListGroup as="ul" variant="flush" className={s.contactList}>
             {search.map(({ id, name, number }) => (
-              <li key={id}>
+              <ListGroup.Item as="li" variant="info" className={s.contactListItem} key={id}>
+                <p className={s.contactListText}>
                 {name}: {}
                 {number}
-                <button
-                  type="button"
+                </p>
+                <Button
+                  type="button" variant="danger"
                   className={s.contactItem__btn}
                   onClick={() => handleDeleteContact(id)}
                 >
                   Удалить
-                </button>
-              </li>
+                </Button>
+                </ListGroup.Item>
             ))}
-          </ul>
+          </ListGroup>
         </div>
       )}
     </>

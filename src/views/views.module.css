@@ -1,0 +1,12 @@
+.login {
+  display: flex;
+  justify-content: center;
+  margin-right: auto;
+  margin-left: auto;
+  width: 800px;
+}
+.loginForm {
+  margin-right: auto;
+  margin-left: auto;
+  width: 800px;
+}

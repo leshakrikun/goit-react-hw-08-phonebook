@@ -1,6 +1,6 @@
 .phoneBookButton {
-  display: block;
   margin-top: 10px;
+  margin-left: 80px;
 }
 .formPhoneBook {
   border: 4px double black;

@@ -3,7 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import { createContact } from '../../redux/actions';
 import { contacts } from '../../redux/contacts-selectors';
-
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form'
 import s from './phonebook.module.css';
 
 const Phonebook = () => {
@@ -47,8 +48,8 @@ const Phonebook = () => {
       <h2>Phonebook</h2>
       <div className={s.formPhoneBook}>
         <p>Name</p>
-        <form onSubmit={handleSubmit}>
-          <input
+        <Form onSubmit={handleSubmit}>
+          <Form.Control
             type="text"
             onChange={handleChange}
             name="name"
@@ -58,7 +59,7 @@ const Phonebook = () => {
             required
           />
           <p>Number</p>
-          <input
+          <Form.Control
             type="tel"
             name="number"
             onChange={handleChange}
@@ -67,10 +68,10 @@ const Phonebook = () => {
             title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
             required
           />
-          <button type="submit" className={s.phoneBookButton}>
+          <Button variant="info" type="submit" className={s.phoneBookButton}>
             Add contact
-          </button>
-        </form>
+          </Button>
+        </Form>
       </div>
     </div>
   );

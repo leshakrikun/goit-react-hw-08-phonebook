@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { filterContact } from '../../redux/reducer';
 import { getVisibleContacts } from '../../redux/contacts-selectors';
 import { forFilterState } from '../../redux/contacts-selectors';
-
+import Form from 'react-bootstrap/Form'
 import PropTypes from 'prop-types';
 import s from './filter.module.css';
 
@@ -19,15 +19,15 @@ const Filter = () => {
   return (
     <>
       <h2>Contacts</h2>
-      <label className={s.findcontacts}>
+      <Form className={s.findcontacts}>
         Find contacts by name
-        <input
+        <Form.Control
           className={s.findInput}
           type="text"
           name="filter"
           onChange={handleChange}
         />
-      </label>
+      </Form>
     </>
   );
 };

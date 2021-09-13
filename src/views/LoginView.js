@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { authOperations } from '../redux/auth';
+import { authOperations } from '../redux/auth/auth-operations';
+import { getContacts } from '../redux/actions';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form'
+import s from './views.module.css';
 
 const styles = {
   form: {
@@ -32,37 +36,40 @@ export default function LoginView() {
   const handleSubmit = e => {
     e.preventDefault();
     dispatch(authOperations.logIn({ email, password }));
+    dispatch(getContacts());
     setEmail('');
     setPassword('');
   };
 
   return (
-    <div>
-      <h1>Страница логина</h1>
+    <div >
+      <h1 className={s.login}>Войдите для использования сервиса</h1>
 
-      <form onSubmit={handleSubmit} style={styles.form} autoComplete="off">
-        <label style={styles.label}>
+      <Form onSubmit={handleSubmit} style={styles.form} className={s.loginForm} autoComplete="off">
+        <Form.Label style={styles.label}>
           Почта
-          <input
+          <Form.Control
             type="email"
             name="email"
             value={email}
+            placeholder="Enter email"
             onChange={handleChange}
           />
-        </label>
+        </Form.Label>
 
-        <label style={styles.label}>
+        <Form.Label style={styles.label}>
           Пароль
-          <input
+          <Form.Control
             type="password"
             name="password"
             value={password}
+            placeholder="Password" 
             onChange={handleChange}
           />
-        </label>
+        </Form.Label>
 
-        <button type="submit">Войти</button>
-      </form>
+        <Button variant="success" type="submit">Войти</Button>
+      </Form>
     </div>
   );
 }

@@ -1,15 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { authOperations } from '../../redux/auth';
+import { authOperations } from '../../redux/auth/auth-operations';
 import { authSelectors } from '../../redux/auth/auth-selectors';
-import defaultAvatar from './default-avatar.png';
+import { useEffect } from 'react';
+import { getContacts } from '../../redux/actions';
+import Button from 'react-bootstrap/Button';
 
 const styles = {
   container: {
     display: 'flex',
     alignItems: 'center',
-  },
-  avatar: {
-    marginRight: 4,
   },
   name: {
     fontWeight: 700,
@@ -19,16 +18,18 @@ const styles = {
 
 export default function UserMenu() {
   const dispatch = useDispatch();
-  const name = useSelector(authSelectors.getUsername);
-  const avatar = defaultAvatar;
+  const mail = useSelector(authSelectors.getUsermail);
+  
+  useEffect(() => {
+    dispatch(getContacts());
+  }, [dispatch]);
 
   return (
     <div style={styles.container}>
-      <img src={avatar} alt="" width="32" style={styles.avatar} />
-      <span style={styles.name}>Добро пожаловать, {name}</span>
-      <button type="button" onClick={() => dispatch(authOperations.logOut())}>
+      <span style={styles.name}>Email: {mail}</span>
+      <Button type="button"  variant="secondary" onClick={() => dispatch(authOperations.logOut())}>
         Выйти
-      </button>
+      </Button>
     </div>
   );
 }

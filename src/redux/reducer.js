@@ -50,6 +50,7 @@ const contactsSlice = createSlice({
     },
     [getContacts.pending]: state => {
       state.loader = true;
+      state.items = [];
     },
     [getContacts.rejected]: state => {
       state.loader = false;
